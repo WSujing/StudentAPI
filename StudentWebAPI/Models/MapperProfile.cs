@@ -13,6 +13,9 @@ namespace StudentWebAPI.Models
         {
             CreateMap<Student, StudentDto>();
             CreateMap<StudentDto, Student>();
+            CreateMap<StudentDtoForPut, Student>();
+
+            CreateMap<Course, CourseDto>();
         }
     }
 }

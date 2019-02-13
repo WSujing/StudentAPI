@@ -39,7 +39,7 @@ namespace StudentWebAPI.Controllers
 
             var studentDto = Mapper.Map<Student, StudentDto>(student);
 
-            return Ok(student);
+            return Ok(studentDto);
         }
 
         //Post /api/Student
@@ -47,7 +47,7 @@ namespace StudentWebAPI.Controllers
         public IHttpActionResult PostStudent(StudentDto studentDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(); 
 
             var student = Mapper.Map<StudentDto, Student>(studentDto);
   
@@ -61,17 +61,23 @@ namespace StudentWebAPI.Controllers
 
         //Put /api/Student/1
         [HttpPut]
-        public IHttpActionResult PutStudent(int id, StudentDto studentDto)
+        public IHttpActionResult PutStudent(StudentDto studentDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var student = _context.Students.Include(c => c.Course).SingleOrDefault(c => c.Id == id);
+            var student = _context.Students.Include(c => c.Course).SingleOrDefault(c => c.Id == studentDto.Id);
 
             if (student == null)
                 return NotFound();
 
-            Mapper.Map<StudentDto, Student>(studentDto, student);
+            student.Id = studentDto.Id;
+            student.Name = studentDto.Name;
+            student.StudentId = studentDto.StudentId;
+            student.Address = studentDto.Address;
+            student.CourseId = studentDto.CourseId;
+
+            //Mapper.Map<StudentDto, Student>(studentDto, student);
 
             _context.SaveChanges();
 
